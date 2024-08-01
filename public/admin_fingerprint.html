@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fingerprint Authentication</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fingerprint_responsive.css">
+</head>
+<body>
+    <div class="container">
+    <div class="card fingerprint col-10 col-md-12">
+        <h2 class="header"></h2>
+        <div class="card-body">
+            <h3 class="card-title">ADMIN AUTHENTICATION</h3>
+            <div class="ring" id="ring">LOADING<span></span></div>
+            <div id="fingerimage" class="fingerprintimage">
+                <img src="./assests/images2.jpeg" alt="Fingerprint" class="fingerprint-image">
+            </div>
+            <div id="button-div">
+            </div>
+        </div>
+    </div>
+</div>
+
+       <!-- Modal -->
+       <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalLabel">Authentication Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Please place your finger on the fingerprint sensor for authentication.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="admin_fingerprint.js"></script>
+</body>
+</html>

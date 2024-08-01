@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="admin_login.css">
+  <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="admin_login.js"></script>
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card login-card">
+      <div class="card-body">
+        <h1 class="card-title text-center">Admin Login for New User Registration</h1>
+        <form id="admin-login-form">
+          <div class="form-group">
+            <label for="admin-password">Admin Password:</label>
+            <input type="password" class="form-control" id="admin-password" required autocomplete="off">
+          </div>
+          <button type="submit" class="btn btn-submit btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

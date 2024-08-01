@@ -1,0 +1,11 @@
+npm init -y
+
+npm install express
+
+npm install socket.io
+
+npm install serialport
+
+npm install @serialport/bindings
+
+

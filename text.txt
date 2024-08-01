@@ -1,0 +1,304 @@
+server.js
+
+const express = require('express');
+const http = require('http');
+const os = require('os');
+const path = require('path');
+const session = require('express-session');
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+const db = require('./server/dbconnection');  // Import the database connection
+const finger_register = require("./server/node_r503/command2.js");
+const finger_authentication = require("./server/node_r503/authentication.js");
+const crypto = require('crypto');
+
+// Import the UART socket handlers
+const authMiddleware = require('./middleware/auth');
+const bodyParser = require('body-parser');
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Parse JSON bodies (as sent by API clients)
+app.use(bodyParser.json());
+// Configure session middleware
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set secure to true if using HTTPS
+}));
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Route for login
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// Use authentication middleware for protected routes
+app.use('/menu.html', authMiddleware, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'menu.html'));
+});
+
+app.use('/registration.html', authMiddleware, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'registration.html'));
+});
+
+
+
+
+// Import the UART socket handlers
+const setupSocketHandlers = require('./server/uart.js');
+
+// Setup socket handlers
+setupSocketHandlers(io);
+
+app.use(express.static('public'));
+app.use(express.json()); // To parse JSON bodies
+
+const adminPassword = "Admin@879"; // Constant admin password
+
+function getLocalIpAddress() {
+    const interfaces = os.networkInterfaces();
+    for (let interfaceName in interfaces) {
+        const iface = interfaces[interfaceName];
+        for (let i = 0; i < iface.length; i++) {
+            const alias = iface[i];
+            if (alias.family === 'IPv4' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+    return '127.0.0.1';
+}
+
+const ipAddress = getLocalIpAddress();
+const PORT = 3000;
+
+
+// Function to check if Ethernet is up
+const checkEthernetStatus = () => {
+    const interfaces = os.networkInterfaces();
+    let ethernetUp = false;
+
+    for (const name in interfaces) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                ethernetUp = true;
+            }
+        }
+    }
+
+    return ethernetUp;
+};
+
+// Periodically check the Ethernet status and emit it to clients
+setInterval(() => {
+    const ethernetStatus = checkEthernetStatus();
+    io.emit('ethernetStatus', ethernetStatus);
+}, 5000); // Check every 5 seconds
+
+
+
+
+io.on('connection', (socket) => {
+    console.log('A client connected');
+    socket.emit('ipAddress', { ip: ipAddress });
+
+// Send the initial Ethernet status to the connected client
+socket.emit('ethernetStatus', checkEthernetStatus());
+
+   
+    // Handle request for username
+    socket.on('get_username', () => {
+        const username = "Hrushitha"; // Replace this with the actual logic to get the username
+        socket.emit('username', username);
+    });
+
+    socket.on('getSysDateTime', () => {
+        const sysDateTime = new Date().toLocaleString();
+        socket.emit('sysDateTime', sysDateTime);
+    });
+
+        // Handle password check
+        socket.on('checkPassword', (inputPassword) => {
+            if (inputPassword === adminPassword) {
+                socket.emit('passwordResult', true);
+            } else {
+                socket.emit('passwordResult', false);
+            }
+        });
+
+
+
+
+
+    socket.on('adminLogin', (loginData) => {
+        const username = loginData.username;
+        const password = crypto.createHash('md5').update(loginData.password).digest('hex');
+
+        // Check if the username is 'admin'
+        if (username === 'admin') {
+            db.get("SELECT username FROM users WHERE username=? AND password=?", [username, password], function(err, data) {
+                if (err) {
+                    console.log(err);
+                    socket.emit('adminLoginResult', { success: false, message: "Internal error" });
+                } else {
+                    if (data) {
+                        socket.emit('adminLoginResult', { success: true, message: "Successfully authenticated" });
+                    } else {
+                        socket.emit('adminLoginResult', { success: false, message: "Incorrect password" });
+                    }
+                }
+            });
+        } else {
+            socket.emit('adminLoginResult', { success: false, message: "Invalid username" });
+        }
+    });
+
+// Fingerprint authentication for admin user only
+socket.on('authenticateAdmin', async () => {
+    await finger_register();
+    db.get("SELECT hashcode FROM users WHERE username = 'admin'", async (err, data) => {
+        if (err) {
+            socket.emit('authenticationResult', { success: false, message: "Some internal server error" });
+        } else {
+            if (data && data.hashcode) {
+                const auth = await finger_authentication(data.hashcode);
+                if (auth) {
+                    socket.emit('authenticationResult', { success: true, message: "Admin successfully authenticated" });
+                } else {
+                    socket.emit('authenticationResult', { success: false, message: "Bio Metric unmatched/Not Available" });
+                }
+            } else {
+                socket.emit('authenticationResult', { success: false, message: "Admin user not found" });
+            }
+        }
+    });
+});
+
+        /* 
+     // Admin login logic
+     socket.on('adminLogin', async (loginData) => {
+        const username = loginData.username;
+        const password = crypto.createHash('md5').update(loginData.password).digest('hex');
+
+        if (username === 'admin') {
+            db.get("SELECT hashcode FROM users WHERE username=? AND password=?", [username, password], async function(err, data) {
+                if (err) {
+                    console.log(err);
+                    socket.emit('adminLoginResult', { success: false, message: "Internal error" });
+                } else {
+                    if (data) {
+                        const auth = await finger_authentication(data.hashcode);
+                        if (auth) {
+                            socket.emit('adminLoginResult', { success: true, message: "Successfully authenticated" });
+                        } else {
+                            socket.emit('adminLoginResult', { success: false, message: "Fingerprint verification failed" });
+                        }
+                    } else {
+                        socket.emit('adminLoginResult', { success: false, message: "Incorrect password" });
+                    }
+                }
+            });
+        } else {
+            socket.emit('adminLoginResult', { success: false, message: "Invalid username" });
+        }
+    });
+ */
+        // Fingerprint authentication across all users
+    socket.on('authenticateUser', async () => {
+        await finger_register();
+        db.all("SELECT hashcode FROM users", async (err, data) => {
+            if (err) {
+                socket.emit('authenticationResult', { success: false, message: "Some internal server error" });
+            } else {
+                for (let index = 0; index < data.length; index++) {
+                    if (data[index].hashcode) {
+                        const auth = await finger_authentication(data[index].hashcode);
+                        if (auth) {
+                            socket.emit('authenticationResult', { success: true, message: "Successfully authenticated" });
+                            return;
+                        }
+                    }
+                }
+                socket.emit('authenticationResult', { success: false, message: "Bio Metric unmatched/Not Available" });
+            }
+        });
+    });
+
+
+
+
+
+
+    // Fingerprint registration
+    socket.on('registerFingerprint', async (userData) => {
+        
+        //var finger_data = await finger_register();
+        //console.log(finger_data);
+        //var finger_data = await finger_register();
+        //console.log(finger_data);
+        if (userData.username && userData.fullname && userData.password && userData.email && userData.phoneNumber ) {
+        //if (userData.username && userData.fullname && userData.password && userData.email && userData.phoneNumber && finger_data) {
+            var username = userData.username;
+            var fullname = userData.fullname;
+            var password = crypto.createHash('md5').update(userData.password).digest('hex');
+            var email = userData.email;
+            var phno = userData.phoneNumber;
+
+            db.all("SELECT * FROM users WHERE username=?", [username], function(err, data) {
+                if (err) {
+                    console.log(err);
+                    socket.emit('registrationResult', { success: false, message: "Internal error" });
+                } else {
+                    if (data.length > 0) {
+                        socket.emit('registrationResult', { success: false, message: "User already exists" });
+                    } else {
+                        db.run("INSERT INTO users (fullname, username, password, email, phno) VALUES (?, ?, ?, ?, ?)", [fullname, username, password, email, phno], function(err) {
+                        /*db.run("INSERT INTO users (fullname, username, password, email, phno, hashcode) VALUES (?, ?, ?, ?, ?, ?)", [fullname, username, password, email, phno, finger_data], function(err) {*/
+                            if (err) {
+                                console.log(err);
+                                socket.emit('registrationResult', { success: false, message: "Internal error" });
+                            } else {
+                                socket.emit('registrationResult', { success: true, message: "Successfully registered" });
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            socket.emit('registrationResult', { success: false, message: "Data in wrong format" });
+        }
+    });
+
+    
+/*********************************************************************************************************************/ 
+    // User login
+    socket.on('login', (loginData) => {
+        var usrid = loginData.username;
+        var password = crypto.createHash('md5').update(loginData.password).digest('hex');
+        db.get("SELECT hashcode FROM users WHERE username=? AND password=?", [usrid, password], function(err, data) {
+            if (err) {
+                console.log(err);
+                socket.emit('loginResult', { success: false, message: "Internal error" });
+            } else {
+                if (data) {
+                    socket.emit('loginResult', { success: true, message: "Successfully authenticated" });
+                } else {
+                    socket.emit('loginResult', { success: false, message: "Authentication failed" });
+                }
+            }
+        });
+    });
+});
+
+server.listen(PORT, ipAddress, () => {
+    console.log(`Server running at http://${ipAddress}:${PORT}/`);
+});
+
+

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Portable Communication Equipment</title>
+    <link href="assets/bootstrap-5.3.3-dist/js/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/fontawesome-free-6.6.0-web/css/all.min.css"> <!-- Font Awesome Offline -->
+    <link rel="stylesheet" href="menu.css">
+ 
+</head>
+<body>  
+    <div class="container-fluid p-0">
+        <header class="d-flex justify-content-between align-items-center p-2 border-bottom">
+            <h1 class="h4 mb-0">Portable Communication Equipment</h1>
+            <div class="d-flex align-items-center">
+                <p class="mb-0 mr-3"> 
+                    <i class="fas fa-user"></i> <!-- Add this line to include a user icon -->
+                    <span id="username"></span></p>
+                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+            </div>
+        </header>
+
+        <main class="flex-grow-1">
+            <div class="main-content row no-gutters mt-2">
+                <div class="col-12">
+                    <div class="row flex-nowrap" id="masterContainer">  
+                      <div class="col-12 col-md-3 p-2 border-right" id="container1">
+                            <button id="messageBtn" class="btn btn-primary btn-block mb-2">
+                                Message <!-- <i class="fas fa-envelope"></i> -->
+                            </button>
+                            <button id="printButton" class="btn btn-primary btn-block mb-2">
+                                Print
+                            </button>
+                            <button id="usbBtn" class="btn btn-primary btn-block mb-2 width:50% ">
+                                USB File Transfer <!-- <i class="fas fa-file"></i> -->
+                            </button>
+                           
+                            <button id="getDateTimeBtn" class="btn btn-secondary btn-block mb-2">Get Date & Time</button>
+                            <button id="systemInfoBtn" class="btn btn-secondary btn-block mb-2">System Info</button>
+                            <button id="setDateTimeBtn" class="btn btn-secondary btn-block mb-2">
+                                 Set Date & Time <i class="fas fa-lock"></i>
+                            </button>
+                            <button id="changePasswordBtn" class="btn btn-secondary btn-block mb-2">Change Password <i class="fas fa-lock"></i></button>
+                            <button id="cfdaldauthBtn" class="btn btn-secondary btn-block mb-2">CFG ALD AUTH <i class="fas fa-lock"></i></button>
+                            <button id="systemidBtn" class="btn btn-secondary btn-block mb-2">System ID</button>
+                            <button id="checksumBtn" class="btn btn-secondary btn-block mb-2">Checksum</button>
+                            <button id="tunnelconfigurationBtn" class="btn btn-secondary btn-block mb-2">Tunnel Configuration</button>
+
+
+                        </div>
+                        <div class="col-12 col-md-3 p-2 border-right" id="container2" style="display: none;">
+                            <div id="messageButtons" style="display: none;">
+                                <button id="inboxBtn" class="btn btn-info btn-block mb-2">Inbox</button>
+                                <button id="outboxBtn" class="btn btn-info btn-block mb-2">Outbox</button>
+                                <button id="composeBtn" class="btn btn-info btn-block mb-2">Compose</button>
+                                <button id="exitmessageBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="printButtons" style="display: none;">
+                                <button id="pinboxBtn" class="btn btn-info btn-block mb-2">Inbox</button>
+                                <button id="poutboxBtn" class="btn btn-info btn-block mb-2">Outbox</button>
+                                <button id="exitprintBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="dateTimeButtons" style="display: none;">
+                                <button id="setTimeBtn" class="btn btn-info btn-block mb-2">Set Time</button>
+                                <button id="setKeyActBtn" class="btn btn-info btn-block mb-2">Set Key Act</button>
+                                <button id="exitBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="getDateTimeButtons" style="display: none;">
+                                <button id="sysDateTimeBtn" class="btn btn-info btn-block mb-2">SYS Date & Time</button>
+                                <button id="keyActDateTimeBtn" class="btn btn-info btn-block mb-2">Key ACT Dt & Time</button>
+                                <button id="keyValidityDateTimeBtn" class="btn btn-info btn-block mb-2">Key Validity Dt & Time</button>
+                                <button id="exitdtBtn" class="btn btn-info btn-block mb-2">Exit</button>
+
+                            </div>
+                            <div id="systemInfoButtons" style="display: none;">
+                                <button id="systemStatusBtn" class="btn btn-info btn-block mb-2">System Status</button>
+                                <button id="exitSystemInfoBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="changePasswordButtons" style="display: none;">
+                                <button id="lcdAuthPwBtn" class="btn btn-info btn-block mb-2">LCD AUTH PW</button>
+                                <button id="lcdSysPwBtn" class="btn btn-info btn-block mb-2">LCD SYS PW</button>
+                                <button id="lcdPlPwBtn" class="btn btn-info btn-block mb-2">LCD PL PW</button>
+                                <button id="snmpAuthPwBtn" class="btn btn-info btn-block mb-2">SNMP AUTH PW</button>
+                                <button id="snmpPrivPwBtn" class="btn btn-info btn-block mb-2">SNMP PRIV PW</button>
+                                <button id="exitPwBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="cfdaldauthButtons" style="display: none;">
+                                <button id="loadalgokeybtn" class="btn btn-info btn-block mb-2">Try to Load ALGO KEY</button>                                
+                                <button id="exitcfdBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="systemidButtons" style="display: none;">
+                                <button id="setsystemidbtn" class="btn btn-info btn-block mb-2">Set System ID</button>                                
+                                <button id="getsystemidbtn" class="btn btn-info btn-block mb-2">Get System ID</button>                                
+                                <button id="exitsystemidBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+
+                            <div id="checksumButtons" style="display: none;">
+                                <button id="pichecksumbtn" class="btn btn-info btn-block mb-2">PI Checksum</button>                                
+                                <button id="algochecksumbtn" class="btn btn-info btn-block mb-2">ALGO Checksum</button>                                
+                                <button id="activekeybtn" class="btn btn-info btn-block mb-2">Acive Key</button>                                
+                                <button id="bufferkeybtn" class="btn btn-info btn-block mb-2">Buffer Key</button>                                
+                                <button id="exitchecksumBtn" class="btn btn-info btn-block mb-2">Exit</button>
+
+                            </div>
+
+
+
+
+
+                            <div id="tunnelConfigurationButtons" style="display: none;">
+                                <button id="validTunnelsBtn" class="btn btn-info btn-block mb-2">Valid Tunnels</button>
+                                <button id="tunnelSetBtn" class="btn btn-info btn-block mb-2">Tunnel Set</button>
+                                <button id="removeTunnelBtn" class="btn btn-info btn-block mb-2">Remove Tunnel</button>
+                                <button id="networkParametersBtn" class="btn btn-info btn-block mb-2">Network Parameters</button>
+                                <button id="exitTunnelBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div class="col-12 col-md-6 p-2" id="container3">
+                            <div id="inboxContent" style="display:none;"></div>
+                            <div id="outboxContent" style="display:none;"></div>
+                            <div id="composeContent" style="display:none;"></div>
+                            <div id="messageDetailsContent" style="display:none;"></div>
+                            <div id="sysDateTimeContent" style="display:none;"></div>
+                            <div id="keyActDateTimeContent" style="display:none;"></div>
+                            <div id="keyValidityDateTimeContent" style="display:none;"></div>
+                            <div id="systemStatusContent" style="display:none;">
+                                <button id="systemStatusContentbackBtn" class="btn btn-secondary mt-2 setipv4backBtn">Back</button>
+
+                            </div>
+                            <div id="setTimeContent" style="display:none;"></div>
+                            <div id="setKeyActContent" style="display:none;"></div>
+                            <div id="lcdAuthPwContent" style="display:none;"></div>
+                            <div id="lcdSysPwContent" style="display:none;"></div>
+                            <div id="lcdPlPwContent" style="display:none;"></div>
+                            <div id="snmpAuthPwContent" style="display:none;"></div>
+                            <div id="snmpPrivPwContent" style="display:none;"></div>
+                            <div id="loadalgokeyContent" style="display:none;"></div>
+                            <div id="setsystemidContent" style="display:none;"></div>
+                            <div id="getsystemidContent" style="display:none;"></div>
+                            
+                            <div id="pichecksumContent" style="display:none;"></div>
+                            <div id="algochecksumContent" style="display:none;"></div>
+                            <div id="activekeyContent" style="display:none;"></div>
+                            <div id="bufferkeyContent" style="display:none;"></div>
+
+                            <div id="fetchingMessage" style="display: none;">
+                                Fetching details...
+                            </div>
+                            
+                            <div id="validTunnelContent" style="display:none;">
+                                <button id="getValidTunnelBtn" class="btn btn-info btn-block mb-2">Get Valid Tunnel</button>
+                                <button id="exitValidTunnelBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="getValidTunnelContent" style="display:none;">
+                                <button id="getValidTunnelgetbackBtn" class="btn btn-secondary mt-2 getValidTunnelgetbackBtn">Back</button>
+                            </div>
+                            
+                            <div id="tunnelSetContent" style="display:none;">
+                                <button id="setipv4Btn" class="btn btn-info btn-block mb-2">Set IPv4</button>
+                                <button id="setipv6Btn" class="btn btn-info btn-block mb-2">Set IPv6</button>
+                                <button id="exittunnelsetBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="setipv4Content" style="display:none;">
+                                <button id="setipv4backBtn" class="btn btn-secondary mt-2 setipv4backBtn">Back</button>
+                            </div>
+                            <div id="setipv6Content" style="display:none;">
+                                <button id="setipv6backBtn" class="btn btn-secondary mt-2 setipv6backBtn">Back</button>
+                            </div>
+
+
+
+                            <div id="removeTunnelContent" style="display:none;">
+                                <button id="singletunnelBtn" class="btn btn-info btn-block mb-2">Single Tunnel</button>
+                                <button id="alltunnelBtn" class="btn btn-info btn-block mb-2">All Tunnel</button>
+                                <button id="exitremovetunnelBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+                            <div id="singletunnelContent" style="display:none;">
+                                <button id="singletunnelRemoveBtn" class="btn btn-secondary mt-2 singletunnelRemoveBtn">Remove</button>
+                                <button id="singletunnelbackBtn" class="btn btn-secondary mt-2 singletunnelbackBtn">Back</button>
+                            </div>
+                            <div id="alltunnelContent" style="display:none;">
+                                <!--  <button id="alltunnelbackBtn" class="btn btn-secondary mt-2 alltunnelbackBtn">Back</button> -->
+                            </div>
+                            
+
+
+                            <div id="networkParametersContent" style="display:none;">
+                                <button id="setedmip-encBtn" class="btn btn-info btn-block mb-2">Set EDM IP-ENC</button>
+                                <button id="setedmip-decBtn" class="btn btn-info btn-block mb-2">Set EDM IP-DEC</button>
+                                <button id="getedmip-encBtn" class="btn btn-info btn-block mb-2">Get EDM IP-ENC</button>
+                                <button id="getedmip-decBtn" class="btn btn-info btn-block mb-2">Get EDM IP-DEC</button>
+                                <button id="exitnetworkParametersBtn" class="btn btn-info btn-block mb-2">Exit</button>
+                            </div>
+
+                            <div id="setedmip-encContent" style="display:none;">
+                                <button id="setipv-4encBtn" class="btn btn-secondary mt-2 setipv-4encBtn">Set IPv_4 ENC</button>
+                                <button id="setipv-6encBtn" class="btn btn-secondary mt-2 setipv-4encBtn">Set IPv_6 ENC</button>
+                                <button id="setedmip-encbackBtn" class="btn btn-secondary mt-2 setedmip-encbackBtn">Back</button>
+                            </div>
+
+                            <div id="setedmip-decContent" style="display:none;">
+                                <button id="setipv-4decBtn" class="btn btn-secondary mt-2 setipv-4decBtn">Set IPv_4 DEC</button>
+                                <button id="setipv-6decBtn" class="btn btn-secondary mt-2 setipv-4decBtn">Set IPv_6 DEC</button>
+                                <button id="setedmip-decbackBtn" class="btn btn-secondary mt-2 setedmip-decbackBtn">Back</button>
+                            </div>
+
+                            <div id="getedmip-encContent" style="display:none;">
+                                <button id="showipv-4encBtn" class="btn btn-secondary mt-2 showipv-4encBtn">Show IPv_4 ENC</button>
+                                <button id="showipv-6encBtn" class="btn btn-secondary mt-2 showipv-4encBtn">Show IPv_6 ENC</button>
+                                <button id="getedmip-encbackBtn" class="btn btn-secondary mt-2 getedmip-encbackBtn">Back</button>
+                            </div>
+
+                            <div id="getedmip-decContent" style="display:none;">
+                                <button id="showipv-4decBtn" class="btn btn-secondary mt-2 showipv-4decBtn">Show IPv_4 DEC</button>
+                                <button id="showipv-6decBtn" class="btn btn-secondary mt-2 showipv-4decBtn">Show IPv_6 DEC</button>
+                                <button id="getedmip-decbackBtn" class="btn btn-secondary mt-2 getedmip-decbackBtn">Back</button>
+                            </div>
+                            
+                        </div>
+
+                        
+                       
+
+                       
+                        
+
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+        <footer class="d-flex justify-content-between align-items-center p-2 border-top">
+            <div>Ethernet Status:</div>
+            <div id="statusIndicator" class="status-indicator"></div>
+            <div>Line Modem Status:</div>
+            <div id="statusIndicator1" class="status-indicator"></div>
+        </footer>
+        <div id="timestamp" style="display: none;"></div> <!-- Hidden timestamp element -->
+    </div>
+
+    <!-- Bootstrap Modal for Authentication -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 600px; width: 100%; max-height:480; height:100%; margin:1.75rem auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalLabel">AUTH password:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="authPassword" class="form-control" placeholder="Enter password">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+                    <button type="button" id="submitAuth" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/bootstrap-5.3.3-dist/js/jquery-3.5.1.min.js"></script>
+    <script src="assets/bootstrap-5.3.3-dist/js/popper.min.js"></script>
+    <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>  
+    <script src="/socket.io/socket.io.js"></script> 
+    <script src="menu.script.js"></script>
+</body>
+</html>

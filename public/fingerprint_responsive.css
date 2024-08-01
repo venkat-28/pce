@@ -1,0 +1,91 @@
+
+.container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+/* General card styling */
+.card.fingerprint {
+    width: 100%;
+    max-width: 600px; /* Sets a max-width for larger devices */
+    height: 100%;
+    max-height: 480px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds a subtle shadow */
+    background-color: #ffffff; /* White background for the card */
+}
+
+.header {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Fingerprint image styles */
+.fingerprintimage img {
+    width: 100%; /* Responsive image size */
+    max-width: 150px; /* Limit image size */
+    height: auto;
+    margin: 0 auto; /* Center the image */
+}
+
+/* Button styles */
+.btn-block {
+    width: 100%;
+    max-width: 350px;
+    margin-top: 20px;
+}
+
+/* Loading ring styles */
+.ring {
+    margin: 20px auto;
+    display: none; /* Hidden by default */
+    position: relative;
+    width: 100px;
+    height: 100px;
+    color: #fff;
+    text-align: center;
+    line-height: 100px;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.5);
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulsate {
+    0% { transform: scale(0.5); opacity: 0.7; }
+    50% { transform: scale(1.0); opacity: 1; }
+    100% { transform: scale(0.5); opacity: 0.7; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .btn-lg {
+        padding: .5rem 1rem; /* Smaller padding on small screens */
+    }
+
+    .ring {
+        width: 80px;
+        height: 80px;
+        line-height: 80px; /* Adjust size of the loading ring */
+    }
+
+    .card-title {
+        font-size: 1.5rem; /* Smaller font size for card title */
+    }
+}
+
+/* Register link styles */
+.register-link span {
+    color: #007bff;
+    cursor: pointer;
+}

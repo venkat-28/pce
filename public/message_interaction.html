@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Interaction</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="message_interaction.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Message Details</h2>
+        <p><strong>Timestamp:</strong> <span id="messageTimestamp"></span></p>
+        <p><strong>Message:</strong></p>
+        <textarea id="messageContent" class="form-control" rows="5" readonly></textarea>
+        <button id="printBtn" class="btn btn-primary mt-2">Print</button>
+        <button id="deleteBtn" class="btn btn-danger mt-2">Delete</button>
+        <button id="forwardBtn" class="btn btn-info mt-2">Forward</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="message_interaction.js"></script>
+</body>
+</html>

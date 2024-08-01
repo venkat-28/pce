@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New User Registration</title>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="user_registration.css">
+</head>
+<body> 
+  <div class="container vh-100">
+    <h1 class="mb-3">New User Registration</h1>
+    <form id="registrationForm" class="needs-validation" novalidate>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="fullName" class="form-label">Full Name:</label>
+        </div>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="fullName" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="username" class="form-label">Username:</label>
+        </div>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="username" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="email" class="form-label">Email Address:</label>
+        </div>
+        <div class="col-md-9">
+          <input type="email" class="form-control" id="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+          <div class="invalid-feedback">Please provide a valid email.</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="phoneNumber" class="form-label">Phone Number:</label>
+        </div>
+        <div class="col-md-9">
+          <input type="tel" class="form-control" id="phoneNumber" required pattern="^\d{10}$">
+          <div class="invalid-feedback">Please provide a valid 10-digit phone number.</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="password" class="form-label">Password:</label>
+        </div>
+        <div class="col-md-9">
+          <input type="password" class="form-control" id="password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="user_registration.js"></script>
+</body>
+</html>
